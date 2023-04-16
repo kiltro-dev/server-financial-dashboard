@@ -5,8 +5,10 @@ import dotev from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import kpisRoutes from './routes/kpi.js';
+import productRoutes from './routes/product.js';
+import Product from './models/Product.js';
 import KPI from './models/KPI.js';
-import { kpis } from './data/data.js';
+import { kpis, products } from './data/data.js';
 
 /**
  * Config
@@ -23,15 +25,13 @@ app.use(morgan('common'));
 /**
  * Routes
  */
+app.use('/kpi', kpisRoutes);
+app.use('/product', productRoutes);
 
 /**
  * Mongoose Setup
  */
 const PORT = process.env.PORT || 9000;
-
-app.use('/kpi', kpisRoutes);
-
-console.log(process.env.MONGO_URL);
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
@@ -43,5 +43,6 @@ mongoose
     });
     // await mongoose.connection.db.dropDatabase();
     // KPI.insertMany(kpis);
+    // Product.insertMany(products);
   })
   .catch((error) => console.log(`${error} did not connect`));
